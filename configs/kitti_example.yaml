@@ -1,0 +1,27 @@
+# Copy this file and replace the matrix with values from the selected KITTI
+# sequence's calib.txt. These placeholders are intentionally invalid.
+camera:
+  matrix: null
+
+input:
+  image_dir: ../data/kitti/sequences/00/image_0
+
+features:
+  max_features: 2500
+  ratio_test: 0.75
+  min_matches: 20
+
+geometry:
+  min_inliers: 15
+  ransac_threshold_px: 1.0
+  ransac_probability: 0.999
+
+output:
+  directory: ../outputs
+  # 0 disables per-pair match images; 1 saves every pair.
+  save_match_every: 1
+
+runtime:
+  # null processes the complete sequence.
+  max_frames: null
+

@@ -1,0 +1,27 @@
+# KITTI odometry sequence 04, left rectified grayscale camera (image_0/P0).
+# This matches the compact SRRG/proSLAM sequence-04 mirror described in README.
+camera:
+  matrix:
+    - [707.0912, 0.0, 601.8873]
+    - [0.0, 707.0912, 183.1104]
+    - [0.0, 0.0, 1.0]
+
+input:
+  image_dir: ../data/kitti/sequences/04/image_0
+
+features:
+  max_features: 2500
+  ratio_test: 0.75
+  min_matches: 20
+
+geometry:
+  min_inliers: 15
+  ransac_threshold_px: 1.0
+  ransac_probability: 0.999
+
+output:
+  directory: ../outputs/kitti_04_200
+  save_match_every: 20
+
+runtime:
+  max_frames: 200
