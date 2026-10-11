@@ -1,0 +1,22 @@
+# Performance experiment for the same sequence-00 turning interval.
+camera:
+  matrix:
+    - [718.856, 0.0, 607.1928]
+    - [0.0, 718.856, 185.2157]
+    - [0.0, 0.0, 1.0]
+input:
+  image_dir: ../data/kitti/srrg00/00.txt.d
+features:
+  max_features: 2000
+  ratio_test: 0.75
+  min_matches: 20
+geometry:
+  min_inliers: 15
+  ransac_threshold_px: 1.0
+  ransac_probability: 0.999
+output:
+  directory: ../outputs/kitti_00_turns_2000_features
+  save_match_every: 0
+runtime:
+  max_frames: 400
+

@@ -1,0 +1,22 @@
+# V1.2 baseline reproduced for the V1.3 controlled comparison.
+camera:
+  matrix:
+    - [718.856, 0.0, 607.1928]
+    - [0.0, 718.856, 185.2157]
+    - [0.0, 0.0, 1.0]
+input:
+  image_dir: ../data/kitti/srrg00/00.txt.d
+features:
+  max_features: 2500
+  ratio_test: 0.75
+  min_matches: 20
+geometry:
+  min_inliers: 15
+  ransac_threshold_px: 1.0
+  ransac_probability: 0.999
+  reliability_checks: false
+output:
+  directory: ../outputs/kitti_00_turns_v13_baseline
+  save_match_every: 0
+runtime:
+  max_frames: 400

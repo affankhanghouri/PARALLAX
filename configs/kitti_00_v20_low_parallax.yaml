@@ -1,0 +1,37 @@
+# Negative V2.0 example; run with --anchor-offset 327 --max-candidates 1.
+camera:
+  matrix:
+    - [718.856, 0.0, 607.1928]
+    - [0.0, 718.856, 185.2157]
+    - [0.0, 0.0, 1.0]
+input:
+  image_dir: ../data/kitti/srrg00/00.txt.d
+features:
+  max_features: 2500
+  ratio_test: 0.75
+  min_matches: 20
+geometry:
+  min_inliers: 15
+  ransac_threshold_px: 1.0
+  ransac_probability: 0.999
+  reliability_checks: true
+  rotation_only_residual_degrees: 0.2
+  rotation_only_min_ratio: 0.6
+  rotation_innovation_degrees: 2.0
+  suspicious_parallax_p10_degrees: 1.0
+  rotation_history_size: 5
+initialization:
+  min_matches: 50
+  min_geometric_inliers: 50
+  min_median_parallax_degrees: 1.0
+  min_p25_parallax_degrees: 0.5
+  grid_rows: 4
+  grid_columns: 6
+  min_occupied_grid_ratio: 0.3333333333
+triangulation:
+  max_reprojection_error_px: 2.0
+  min_angle_degrees: 1.0
+  max_depth_arbitrary_units: 100.0
+output:
+  directory: ../outputs/kitti_00_v20_low_parallax
+  save_match_every: 0

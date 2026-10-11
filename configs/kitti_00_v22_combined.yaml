@@ -1,0 +1,74 @@
+# V2.2 Experiment D: verified references plus conservative map replenishment.
+camera:
+  matrix:
+    - [718.856, 0.0, 607.1928]
+    - [0.0, 718.856, 185.2157]
+    - [0.0, 0.0, 1.0]
+input:
+  image_dir: ../data/kitti/srrg00/00.txt.d
+features:
+  max_features: 2500
+  ratio_test: 0.75
+  min_matches: 20
+geometry:
+  min_inliers: 15
+  ransac_threshold_px: 1.0
+  ransac_probability: 0.999
+  reliability_checks: true
+  rotation_only_residual_degrees: 0.2
+  rotation_only_min_ratio: 0.6
+  rotation_innovation_degrees: 2.0
+  suspicious_parallax_p10_degrees: 1.0
+  rotation_history_size: 5
+initialization:
+  min_matches: 50
+  min_geometric_inliers: 50
+  min_median_parallax_degrees: 1.0
+  min_p25_parallax_degrees: 0.5
+  grid_rows: 4
+  grid_columns: 6
+  min_occupied_grid_ratio: 0.3333333333
+triangulation:
+  max_reprojection_error_px: 2.0
+  min_angle_degrees: 1.0
+  max_depth_arbitrary_units: 100.0
+tracking:
+  association_mode: projected
+  projection_search_radius_px: 50.0
+  descriptor_update_policy: bounded_recent
+  descriptor_bank_max_size: 3
+  optical_flow_enabled: true
+  optical_flow_max_forward_backward_error_px: 1.5
+  optical_flow_max_lk_error: 20.0
+  max_descriptor_distance: 64
+  min_correspondences: 8
+  min_inliers: 6
+  min_inlier_ratio: 0.5
+  ransac_reprojection_error_px: 3.0
+  max_median_reprojection_error_px: 2.0
+  max_p95_reprojection_error_px: 4.0
+  min_occupied_grid_cells: 4
+  max_rotation_jump_degrees: 15.0
+  max_translation_jump_arbitrary: 2.0
+mapping:
+  enabled: true
+  keyframe_min_frame_gap: 2
+  keyframe_max_frame_gap: 10
+  keyframe_min_translation_arbitrary: 0.45
+  keyframe_min_rotation_degrees: 2.0
+  keyframe_support_ratio_trigger: 0.5
+  keyframe_critical_support_ratio: 0.1
+  keyframe_critical_min_translation_arbitrary: 0.30
+  keyframe_critical_min_frame_gap: 2
+  min_matches: 20
+  epipolar_threshold_px: 1.5
+  max_reprojection_error_px: 2.0
+  min_triangulation_angle_degrees: 1.0
+  max_depth_arbitrary: 100.0
+  min_new_landmarks: 12
+  min_occupied_grid_cells: 6
+  duplicate_radius_px: 3.0
+  max_landmarks: 1000
+output:
+  directory: ../outputs/kitti_00_v22_combined
+  save_match_every: 0

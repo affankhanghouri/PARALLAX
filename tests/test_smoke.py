@@ -45,4 +45,5 @@ def test_short_image_sequence_smoke(tmp_path: Path) -> None:
     assert odometry.successes + odometry.failures == 2
     assert (tmp_path / "output" / "metrics.json").is_file()
     assert (tmp_path / "output" / "trajectory.png").is_file()
+    assert (tmp_path / "output" / "poses_camera_to_world.csv").is_file()
     assert len(list((tmp_path / "output" / "matches").glob("*.jpg"))) == 2

@@ -1,0 +1,31 @@
+# V1.3 reliability mode on the identical KITTI sequence 00 segment.
+camera:
+  matrix:
+    - [718.856, 0.0, 607.1928]
+    - [0.0, 718.856, 185.2157]
+    - [0.0, 0.0, 1.0]
+input:
+  image_dir: ../data/kitti/srrg00/00.txt.d
+features:
+  max_features: 2500
+  ratio_test: 0.75
+  min_matches: 20
+geometry:
+  min_inliers: 15
+  ransac_threshold_px: 1.0
+  ransac_probability: 0.999
+  reliability_checks: true
+  # 0.2 degrees is about 2.5 px at KITTI's 718.856 px focal length.
+  rotation_only_residual_degrees: 0.2
+  # Translation is omitted only when a constrained SO(3) model explains >=60%.
+  rotation_only_min_ratio: 0.6
+  # At 10 Hz, 2 degrees is a 20 deg/s one-frame change from recent motion.
+  rotation_innovation_degrees: 2.0
+  # A temporal outlier is questionable only if even the lowest-parallax 10% exceed 1 degree.
+  suspicious_parallax_p10_degrees: 1.0
+  rotation_history_size: 5
+output:
+  directory: ../outputs/kitti_00_turns_v13_reliable
+  save_match_every: 0
+runtime:
+  max_frames: 400

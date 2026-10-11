@@ -21,6 +21,10 @@ class PairMetric:
     inliers: int
     success: bool
     reason: str
+    rotation_current_from_previous: list[float] | None = None
+    translation_direction_current_frame: list[float] | None = None
+    state: str = "VALID_MOTION"
+    diagnostics: dict[str, float | int | None] | None = None
 
 
 class Metrics:
@@ -33,6 +37,9 @@ class Metrics:
     def summary(self) -> dict[str, float | int]:
         core = np.asarray([item.core_total_ms for item in self.pairs], dtype=float)
         successes = sum(item.success for item in self.pairs)
+        states = {state: sum(item.state == state for item in self.pairs) for state in (
+            "VALID_MOTION", "ROTATION_ONLY", "DEGENERATE", "TRACKING_LOST"
+        )}
         if core.size == 0:
             return {"pairs": 0, "successes": 0, "failures": 0, "average_fps": 0.0}
         return {
@@ -48,9 +55,9 @@ class Metrics:
             "geometry_mean_ms": float(np.mean([item.geometry_ms for item in self.pairs])),
             "visualization_mean_ms": float(np.mean([item.visualization_ms for item in self.pairs])),
             "inliers_mean": float(np.mean([item.inliers for item in self.pairs])),
+            **{f"state_{key.lower()}": value for key, value in states.items()},
         }
 
     def save(self, directory: Path) -> None:
         payload = {"summary": self.summary(), "pairs": [asdict(item) for item in self.pairs]}
         (directory / "metrics.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
-

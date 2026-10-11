@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from .geometry import PoseEstimate
+from .geometry import MotionState, PoseEstimate
 
 
 class VisualOdometry:
@@ -18,28 +18,38 @@ class VisualOdometry:
     def __init__(self) -> None:
         self.pose_camera_to_world = np.eye(4, dtype=np.float64)
         self.trajectory: list[np.ndarray] = [np.zeros(3, dtype=np.float64)]
+        self.poses_camera_to_world: list[np.ndarray] = [self.pose_camera_to_world.copy()]
         self.successes = 0
         self.failures = 0
         self.tracking_reliable = True
+        self.state_counts = {state.value: 0 for state in MotionState}
 
     def update(self, estimate: PoseEstimate) -> bool:
-        if not estimate.success or estimate.rotation is None or estimate.translation is None:
+        self.state_counts[estimate.state.value] += 1
+        if not estimate.success or estimate.rotation is None:
             self.mark_failure()
             return False
         relative = np.eye(4, dtype=np.float64)
         relative[:3, :3] = estimate.rotation
-        relative[:3, 3] = estimate.translation
+        if estimate.state == MotionState.VALID_MOTION and estimate.translation is not None:
+            relative[:3, 3] = estimate.translation
+        elif estimate.state == MotionState.ROTATION_ONLY:
+            # Orientation is observable; position is held rather than inventing
+            # the baseline engine's arbitrary one-unit translation.
+            self.tracking_reliable = False
+        else:
+            self.mark_failure()
+            return False
         candidate = self.pose_camera_to_world @ np.linalg.inv(relative)
         if not np.all(np.isfinite(candidate)):
             self.mark_failure()
             return False
         self.pose_camera_to_world = candidate
         self.trajectory.append(candidate[:3, 3].copy())
+        self.poses_camera_to_world.append(candidate.copy())
         self.successes += 1
-        self.tracking_reliable = True
         return True
 
     def mark_failure(self) -> None:
         self.failures += 1
         self.tracking_reliable = False
-
